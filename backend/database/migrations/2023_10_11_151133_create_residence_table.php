@@ -11,9 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('residence', function (Blueprint $table) {
+        Schema::create('residences', function (Blueprint $table) {
             $table->id();
-            $table->string('address');
+            $table->string('city');
+            $table->string('street');
             $table->string('rooms_number');
             $table->string('square_meters');
             $table->enum('type', ['apartment', 'house', 'cottage']);

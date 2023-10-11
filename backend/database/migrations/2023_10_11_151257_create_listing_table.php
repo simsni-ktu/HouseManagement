@@ -11,9 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('listing', function (Blueprint $table) {
+        Schema::create('listings', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('residence_id')->constrained('residence')->cascadeOnDelete();;
+            $table->foreignId('residence_id')->constrained('residences')->cascadeOnDelete();;
             $table->string('price');
             $table->date('fix_deadline');
             $table->enum('issue_type', ['water leakage', 'electrical', 'window repair', 'other']);
