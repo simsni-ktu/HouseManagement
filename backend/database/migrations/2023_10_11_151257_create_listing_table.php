@@ -13,6 +13,11 @@ return new class extends Migration
     {
         Schema::create('listing', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('residence_id')->constrained('residence')->cascadeOnDelete();;
+            $table->string('price');
+            $table->date('fix_deadline');
+            $table->enum('issue_type', ['water leakage', 'electrical', 'window repair', 'other']);
+            $table->text('description');
             $table->timestamps();
         });
     }

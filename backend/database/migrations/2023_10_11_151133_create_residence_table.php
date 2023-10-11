@@ -13,6 +13,11 @@ return new class extends Migration
     {
         Schema::create('residence', function (Blueprint $table) {
             $table->id();
+            $table->string('address');
+            $table->string('rooms_number');
+            $table->string('square_meters');
+            $table->enum('type', ['apartment', 'house', 'cottage']);
+            $table->text('description');
             $table->timestamps();
         });
     }

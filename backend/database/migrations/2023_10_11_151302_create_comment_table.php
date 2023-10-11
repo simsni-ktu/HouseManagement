@@ -13,7 +13,11 @@ return new class extends Migration
     {
         Schema::create('comment', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('listing_id')->constrained('listing');
+            $table->foreignId('user_id')->constrained('users'); // Add foreign key to users table
+            $table->text('comment_text'); // Comment Text
             $table->timestamps();
+
         });
     }
 
