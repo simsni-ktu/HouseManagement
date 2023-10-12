@@ -1,7 +1,7 @@
 <?php
 
-use App\Http\Controllers\CommentController;
-use App\Http\Controllers\ListingController;
+use App\Http\Controllers\ResidenceListingCommentController;
+use App\Http\Controllers\ResidenceListingController;
 use App\Http\Controllers\ResidenceController;
 use Illuminate\Support\Facades\Route;
 
@@ -16,7 +16,9 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::resource('residence', ResidenceController::class);
-Route::resource('listing', ListingController::class);
-Route::resource('comment', CommentController::class);
+
+
+Route::apiResource('/residences', ResidenceController::class);
+Route::apiResource('/residences.listings', ResidenceListingController::class);
+Route::apiResource('/residences.listings.comments', ResidenceListingCommentController::class);
 

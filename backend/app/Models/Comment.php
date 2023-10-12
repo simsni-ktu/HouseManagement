@@ -10,6 +10,13 @@ class Comment extends Model
     use HasFactory;
 
     protected $fillable = [
-      'text'
+        'listing_id',
+        'user_id',
+        'comment_text'
     ];
+
+    public function listing()
+    {
+        return $this->belongsTo(Listing::class);
+    }
 }

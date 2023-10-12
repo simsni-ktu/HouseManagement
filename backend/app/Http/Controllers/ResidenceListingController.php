@@ -3,56 +3,59 @@
 namespace App\Http\Controllers;
 
 use App\Models\Listing;
+use App\Models\Residence;
 use Illuminate\Http\Request;
 
-class ListingController extends Controller
+class ResidenceListingController extends Controller
 {
-    public function index()
+
+    public function index(Residence $residence)
     {
-        $listings = Listing::all();
-        return response()->json($listings);
+        return response()->json($residence->listings()->get());
     }
 
-    public function show($id)
+    public function show(Residence $residence, Listing $listing)
     {
-        $listing = Listing::findOrFail($id);
+        if ($listing->residence_id !== $residence->id) {
+            return response()->json(['error' => 'Listing does not belong to the specified residence'], 404);
+        }
+
         return response()->json($listing);
     }
 
-    public function store(Request $request)
+    public function store(Residence $residence, Request $request)
     {
         $validatedData = $request->validate([
-            'residence_id' => 'required|exists:residences,id',
+            'residence_id' => 'prohibited',
+            'price' => 'required|string',
+            'fix_deadline' => 'required|date',
+            'issue_type' => 'required|in:water leakage,electrical,window repair,other',
+            'description' => 'required|string',
+        ]);
+        $validatedData['residence_id'] = $residence->id;
+
+        return response()->json(Listing::create($validatedData), 201);
+    }
+
+    public function update(Request $request,Residence $residence, Listing $listing)
+    {
+        $validatedData = $request->validate([
+            'residence_id' => 'prohibited',
             'price' => 'required|string',
             'fix_deadline' => 'required|date',
             'issue_type' => 'required|in:water leakage,electrical,window repair,other',
             'description' => 'required|string',
         ]);
 
-        $listing = Listing::create($validatedData);
+        $validatedData['residence_id'] = $residence->id;
 
-        return response()->json($listing);
-    }
-
-    public function update(Request $request, $id)
-    {
-        $validatedData = $request->validate([
-            'residence_id' => 'required|exists:residences,id',
-            'price' => 'required|string',
-            'fix_deadline' => 'required|date',
-            'issue_type' => 'required|in:water leakage,electrical,window repair,other',
-            'description' => 'required|string',
-        ]);
-
-        $listing = Listing::findOrFail($id);
         $listing->update($validatedData);
 
         return response()->json($listing);
     }
 
-    public function destroy($id)
+    public function destroy(Residence $residence, Listing $listing)
     {
-        $listing = Listing::findOrFail($id);
         $listing->delete();
 
         return response()->json(['message' => 'Listing deleted successfully']);

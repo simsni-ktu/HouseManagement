@@ -13,9 +13,8 @@ class ResidenceController extends Controller
         return response()->json($residences);
     }
 
-    public function show($id)
+    public function show(Residence $residence)
     {
-        $residence = Residence::findOrFail($id);
         return response()->json($residence);
     }
 
@@ -31,10 +30,10 @@ class ResidenceController extends Controller
 
         $residence = Residence::create($validatedData);
 
-        return response()->json($residence);
+        return response()->json($residence,201);
     }
 
-    public function update(Request $request, $id)
+    public function update(Request $request, Residence $residence)
     {
         $validatedData = $request->validate([
             'city' => 'required|string',
@@ -44,15 +43,13 @@ class ResidenceController extends Controller
             'description' => 'required|string',
         ]);
 
-        $residence = Residence::findOrFail($id);
         $residence->update($validatedData);
 
         return response()->json($residence);
     }
 
-    public function destroy($id)
+    public function destroy(Residence $residence)
     {
-        $residence = Residence::findOrFail($id);
         $residence->delete();
 
         return response()->json(['message' => 'Residence deleted successfully']);
