@@ -23,13 +23,16 @@ Route::group([
     'prefix' => 'auth'
 
 ], function ($router) {
+    Route::post('register', [AuthController::class, 'register']);
     Route::post('login', [AuthController::class, 'login']);
     Route::post('logout', [AuthController::class, 'logout']);
     Route::post('refresh', [AuthController::class, 'refresh']);
 });
 
-Route::post('/auth/register', [AuthController::class, 'register']);
-Route::apiResource('/residences', ResidenceController::class);
-Route::apiResource('/residences.listings', ResidenceListingController::class);
-Route::apiResource('/residences.listings.comments', ResidenceListingCommentController::class);
-
+Route::group([
+    'middleware' => [\App\Http\Middleware\UnauthenticatedAccessMiddleware::class],
+], function ($router) {
+    Route::apiResource('/residences', ResidenceController::class);
+    Route::apiResource('/residences.listings', ResidenceListingController::class);
+    Route::apiResource('/residences.listings.comments', ResidenceListingCommentController::class);
+});

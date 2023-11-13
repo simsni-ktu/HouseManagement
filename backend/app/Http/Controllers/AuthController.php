@@ -16,7 +16,7 @@ class AuthController extends Controller
      */
     public function __invoke()
     {
-        $this->middleware('auth:api', ['except' => ['login']]);
+        $this->middleware('auth:api', ['except' => ['login', 'register']]);
     }
 
     /**
