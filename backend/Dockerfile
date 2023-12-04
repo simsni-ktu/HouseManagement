@@ -1,27 +1,15 @@
-# Use the official PHP image as the base image
-FROM php:8.1.0-apache
+FROM php:8.1
 
-# Set the working directory in the container
+RUN apt-get update && apt-get install -y \
+    libpq-dev \
+    && docker-php-ext-install pdo pdo_mysql
+
 WORKDIR /var/www/html
 
-# Copy the application files to the container
-COPY . /var/www/html
+COPY . .
 
-# Install dependencies using Composer
-RUN apt-get update -y && apt-get install -y \
-        git \
-        unzip \
-        libzip-dev && \
-    docker-php-ext-install zip pdo_mysql && \
-    curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer && \
-    composer install --no-interaction --optimize-autoloader
+RUN chown -R www-data:www-data \
+    /var/www/html/storage \
+    /var/www/html/bootstrap/cache
 
-
-# Set up Apache configurations (if necessary)
-# ...
-
-# Expose port 80
-EXPOSE 80
-
-# Start Apache
-CMD ["apache2-foreground"]
+CMD php artisan serve --host=0.0.0.0 --port=8000

@@ -34,7 +34,7 @@ class AuthController extends Controller
         $requestData = $request->only(['name', 'password']);
 
         $data = [
-            'grant_type' => 'password',
+            'grant_type' => 'client_credentials',
             'client_id' => config('oauth.client_id'),
             'client_secret' => config('oauth.client_secret'),
             'username' => $requestData['name'],
@@ -49,7 +49,8 @@ class AuthController extends Controller
             $responseData = json_decode($response->getContent(), true);
             return response()->json($responseData);
         } else {
-            return response()->json(['error' => 'Invalid credentials'], 401);
+            return $response;
+           // return response()->json(['error' => 'Invalid credentials'], 401);
         }
     }
 
