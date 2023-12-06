@@ -1,3 +1,15 @@
+# Stage 1: Composer
+FROM composer:latest AS composer
+
+WORKDIR /app
+
+# Copy only the necessary files for dependency resolution
+COPY composer.json composer.lock ./
+
+# Install dependencies
+RUN composer install --no-scripts --no-autoloader && rm -rf /root/.composer
+
+# Stage 2: PHP
 FROM php:8.1
 
 RUN apt-get update && apt-get install -y \
@@ -6,9 +18,11 @@ RUN apt-get update && apt-get install -y \
 
 WORKDIR /var/www/html
 
+# Copy the application files
 COPY . .
 
-COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
+# Copy the vendor directory from the Composer stage
+COPY --from=composer /app/vendor ./vendor
 
 RUN chown -R www-data:www-data \
     /var/www/html/storage \
