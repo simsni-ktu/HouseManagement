@@ -1,0 +1,28 @@
+version: '3'
+
+services:
+    laravelapp:
+        container_name: laravelapp
+        image: francescoxx/laravelapp:1.0.0
+        build: .
+        ports:
+            - "8000:8000"
+        env_file:
+            - .env
+        depends_on:
+            - db
+    db:
+        container_name: db
+        image: mysql:latest
+        ports:
+            - "3306:3306"
+        environment:
+            - MYSQL_ROOT_USER='root'
+            - MYSQL_ROOT_PASSWORD=''
+            - MYSQL_USER = 'root'
+            - MYSQL_PASS = ''
+        volumes:
+            - ./db-data:/var/lib/mysql
+
+volumes:
+    db-data: {}

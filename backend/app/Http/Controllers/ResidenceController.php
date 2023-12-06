@@ -4,13 +4,20 @@ namespace App\Http\Controllers;
 
 use App\Models\Residence;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class ResidenceController extends Controller
 {
     public function index()
     {
-        $residences = Residence::all();
-        return response()->json($residences);
+
+        if (Auth::user()->can('users_delete')) {
+            $residences = Residence::all();
+            return response()->json($residences);
+        } else {
+            return response()->json(['message' => 'Permission denied'], 401);
+        }
+
     }
 
     public function show(Residence $residence)
@@ -30,7 +37,7 @@ class ResidenceController extends Controller
 
         $residence = Residence::create($validatedData);
 
-        return response()->json($residence,201);
+        return response()->json($residence, 201);
     }
 
     public function update(Request $request, Residence $residence)
