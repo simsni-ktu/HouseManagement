@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
 class AuthController extends Controller
@@ -46,7 +47,10 @@ class AuthController extends Controller
         $response = app('router')->prepareResponse($request, app()->handle($request));
 
         if ($response->getStatusCode() == 200) {
+            $user = Auth::user();
+            $role = $user->getRoleNames()->first();
             $responseData = json_decode($response->getContent(), true);
+            $responseData['user_role'] = $role;
             return response()->json($responseData);
         } else {
             return response()->json(['error' => 'Invalid credentials'], 401);

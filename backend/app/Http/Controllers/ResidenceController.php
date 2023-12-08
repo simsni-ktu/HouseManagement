@@ -11,12 +11,12 @@ class ResidenceController extends Controller
     public function index()
     {
 
-        if (Auth::user()->can('users_delete')) {
+//        if (Auth::user()->can('users_delete')) {
             $residences = Residence::all();
             return response()->json($residences);
-        } else {
-            return response()->json(['message' => 'Permission denied'], 401);
-        }
+//        } else {
+//            return response()->json(['message' => 'Permission denied'], 401);
+//        }
 
     }
 
@@ -28,6 +28,7 @@ class ResidenceController extends Controller
     public function store(Request $request)
     {
         $validatedData = $request->validate([
+            'user_id' => 'required|exists:users,id',
             'city' => 'required|string',
             'street' => 'required|string',
             'rooms_number' => 'required|string',
