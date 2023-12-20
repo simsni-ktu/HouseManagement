@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\ListingController;
 use App\Http\Controllers\ResidenceListingCommentController;
 use App\Http\Controllers\ResidenceListingController;
 use App\Http\Controllers\ResidenceController;
@@ -29,5 +30,6 @@ Route::group(['middleware' => 'auth:api'], function () {
     Route::apiResource('/residences.listings.comments', ResidenceListingCommentController::class);
     Route::post('/logout', [AuthController::class, 'logout']);
     Route::post('/token/refresh', [AuthController::class, 'refresh']);
+    Route::get('/listings', [ListingController::class, 'index']);
 
 });

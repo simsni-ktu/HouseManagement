@@ -26,6 +26,7 @@ class ResidenceListingController extends Controller
     public function store(Residence $residence, Request $request)
     {
         $validatedData = $request->validate([
+            'user_id' => 'required|exists:users,id',
             'residence_id' => 'prohibited',
             'price' => 'required|string',
             'fix_deadline' => 'required|date',

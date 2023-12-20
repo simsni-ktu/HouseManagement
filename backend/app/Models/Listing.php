@@ -11,6 +11,7 @@ class Listing extends Model
     use HasFactory;
 
     protected $fillable = [
+        'user_id',
         'residence_id',
         'price',
         'fix_deadline',

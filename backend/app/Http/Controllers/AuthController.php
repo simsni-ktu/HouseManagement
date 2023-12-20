@@ -11,6 +11,8 @@ class AuthController extends Controller
 {
     public function register(Request $request)
     {
+
+
         // Validate the request data
         $request->validate([
             'name' => 'required|string',
@@ -47,8 +49,9 @@ class AuthController extends Controller
         $response = app('router')->prepareResponse($request, app()->handle($request));
 
         if ($response->getStatusCode() == 200) {
-            $user = Auth::user();
-            $role = $user->getRoleNames()->first();
+            //$user = Auth::user();
+            //$role = $user->getRoleNames()->first();
+            $role = "User";
             $responseData = json_decode($response->getContent(), true);
             $responseData['user_role'] = $role;
             return response()->json($responseData);
